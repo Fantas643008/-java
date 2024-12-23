@@ -1,0 +1,77 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class ContactForm extends JFrame {
+    JTextField name_field, email_field;
+    JRadioButton male, female;
+    JCheckBox check;
+
+    public ContactForm() {
+        super("Первое приложение");
+        super.setBounds(500, 200, 500, 300);
+        super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        Container container = super.getContentPane();
+        container.setLayout(new GridLayout(9, 3, 2, 2));
+
+        JLabel name = new JLabel("Введите имя");
+        name_field = new JTextField("", 1);
+        JLabel email = new JLabel("Введите email");
+        email_field = new JTextField("@", 1);
+
+        container.add(name);
+        container.add(name_field);
+        container.add(email);
+        container.add(email_field);
+
+        male = new JRadioButton("Мужской");
+        female = new JRadioButton("Женский");
+        check = new JCheckBox("Согласен с правилами?", false);
+        JButton send_button = new JButton("Отправить");
+        JButton clear_button = new JButton("Стереть");
+
+        male.setSelected(true);
+        container.add(male);
+        container.add(female);
+
+        ButtonGroup group = new ButtonGroup();
+        group.add(male);
+        group.add(female);
+
+        container.add(check);
+        container.add(send_button);
+        container.add(clear_button);
+        send_button.addActionListener(new ButtonEventManager());
+        clear_button.addActionListener(new Manager());
+    }
+    class Manager implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            name_field.setText("");
+            email_field.setText("@");
+
+        }
+    }
+    class ButtonEventManager implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String name = name_field.getText();
+            String email = email_field.getText();
+            String isMale = "Мужской";
+            if (!male.isSelected())
+                isMale = "Женский";
+            boolean checkBox = check.isSelected();
+            if (name.equals("") || email.equals("@"))
+                JOptionPane.showMessageDialog(null, "Введите данные");
+            else if (checkBox)
+                JOptionPane.showMessageDialog(null, "Ваша почта: " + email + "\nВаш пол: " + isMale,
+                            "Привет, " + name, JOptionPane.PLAIN_MESSAGE);
+            else
+                JOptionPane.showMessageDialog(null, "Согласитесь с правилами");
+        }
+    }
+}
+
+
